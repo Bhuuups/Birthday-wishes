@@ -60,20 +60,21 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 <div class="row">
 <div class="grow"><label for="days">Kitne din pehle bhejna hai</label><input id="days" type="number" min="0" max="60" value="7"></div>
 <div class="grow"><label for="school">School / aapka naam</label><input id="school" value="School Family"></div>
+<div class="grow"><label for="link">Celebration page ka link</label><input id="link" placeholder="https://aapka-app.onrender.com/"></div>
 </div>
 <label for="opts">Celebration options (har line ek option)</label>
 <textarea id="opts">🎂 Cake (500g / 1kg) – class me cutting
 🍫 Chocolates / return gifts
 🎈 Classroom decoration
 📸 Birthday photo card</textarea>
-<label for="tpl">Message ({name}, {date}, {days}, {school}, {options})</label>
+<label for="tpl">Message ({name}, {date}, {days}, {school}, {options}, {link})</label>
 <textarea id="tpl">Namaste! 🎉
 {name} ka birthday {date} ko hai ({days}). {school} ki taraf se advance Happy Birthday! 🎂
 
 Celebrate karne ke options:
 {options}
 
-Jo option pasand ho, reply kar dijiye.</textarea>
+Photos ke saath options dekho aur chuno: {link}</textarea>
 <button class="alt" id="savetpl" style="margin-top:10px">Message save karo</button>
 </section>
 
@@ -110,7 +111,7 @@ return{date:b,diff:Math.round((b-t)/864e5)}}
 function dayWord(n){return n===0?"aaj":n===1?"kal":n+" din baad"}
 function fmt(b){return b.toLocaleDateString("en-IN",{day:"numeric",month:"long"})}
 function msg(s,nb){var o=($("opts").value||"").trim();
-return $("tpl").value.replace(/{name}/g,s.n).replace(/{date}/g,fmt(nb.date)).replace(/{days}/g,dayWord(nb.diff)).replace(/{school}/g,$("school").value).replace(/{options}/g,o)}
+return $("tpl").value.replace(/{name}/g,s.n).replace(/{date}/g,fmt(nb.date)).replace(/{days}/g,dayWord(nb.diff)).replace(/{school}/g,$("school").value).replace(/{options}/g,o).replace(/{link}/g,($("link").value.trim()||"")+"?s="+encodeURIComponent(s.n))}
 function key(s,nb){return s.n+"|"+nb.date.getFullYear()}
 function row(s,nb,due){var k=key(s,nb),done=S.sent[k];
 var age=nb.date.getFullYear()-s.y;
@@ -132,10 +133,10 @@ if(!r.out.length){alert("Koi valid line nahi mili. Format: Naam, 15-10-2014, 987
 S.students=r.out;save();render();if(r.bad)alert(r.bad+" line(s) skip hui (date galat thi).")};
 $("clear").onclick=function(){if(confirm("Saare students hata dein?")){S.students=[];S.sent={};$("data").value="";save();render()}};
 $("file").onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){$("data").value=r.result;$("save").click()};r.readAsText(f)};
-$("savetpl").onclick=function(){S.tpl=$("tpl").value;S.opts=$("opts").value;S.school=$("school").value;S.days=+$("days").value;save();render()};
+$("savetpl").onclick=function(){S.tpl=$("tpl").value;S.opts=$("opts").value;S.school=$("school").value;S.link=$("link").value;S.days=+$("days").value;save();render()};
 $("days").oninput=function(){S.days=+this.value;save();render()};
 load();
-if(S.tpl)$("tpl").value=S.tpl;if(S.opts)$("opts").value=S.opts;$("school").value=S.school;$("days").value=S.days;
+if(S.tpl)$("tpl").value=S.tpl;if(S.opts)$("opts").value=S.opts;$("school").value=S.school;$("link").value=S.link||"";$("days").value=S.days;
 if(S.students.length)$("data").value=S.students.map(function(s){return[s.n,s.d+"-"+s.m+"-"+s.y,s.p].join(", ")}).join("\n");
 render();
 </script>
