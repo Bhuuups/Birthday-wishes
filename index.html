@@ -114,7 +114,7 @@ return $("tpl").value.replace(/{name}/g,s.n).replace(/{date}/g,fmt(nb.date)).rep
 function key(s,nb){return s.n+"|"+nb.date.getFullYear()}
 function row(s,nb,due){var k=key(s,nb),done=S.sent[k];
 var age=nb.date.getFullYear()-s.y;
-return '<div class="stu '+(due?"due ":"")+(done?"sent":"")+'"><div><div class="nm">'+esc(s.n)+'</div><div class="meta">'+esc(fmt(nb))+' · '+age+' saal ke honge · '+(s.p?"+"+esc(s.p):"number nahi hai")+'</div></div><div class="row"><span class="badge '+(nb.diff<=+$("days").value?"hot":"")+'">'+dayWord(nb.diff)+'</span>'+
+return '<div class="stu '+(due?"due ":"")+(done?"sent":"")+'"><div><div class="nm">'+esc(s.n)+'</div><div class="meta">'+esc(fmt(nb.date))+' · '+age+' saal ke honge · '+(s.p?"+"+esc(s.p):"number nahi hai")+'</div></div><div class="row"><span class="badge '+(nb.diff<=+$("days").value?"hot":"")+'">'+dayWord(nb.diff)+'</span>'+
 (s.p?'<button class="wa" data-k="'+esc(k)+'" data-i="'+S.students.indexOf(s)+'">'+(done?"Dobara bhejo":"WhatsApp bhejo")+'</button>':"")+'</div></div>'}
 function render(){
 var n=+$("days").value||0;
